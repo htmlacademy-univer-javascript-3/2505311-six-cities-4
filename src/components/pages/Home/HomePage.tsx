@@ -1,4 +1,4 @@
-import PlaceCard from './PlaceCard';
+import PlaceCard from '../../PlaceCard.tsx';
 
 export interface HomePageProps {
   placesFound: number;
