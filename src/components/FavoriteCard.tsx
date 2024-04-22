@@ -1,41 +1,34 @@
 import {Offer} from '../const';
-import {Link} from 'react-router-dom';
 
-export default function PlaceCard({offer, onHover}: {
-  offer: Offer;
-  onHover: (id: string | null) => void;
-}) {
-  const { mark, name, rating, type, pricePerNight, cardImage, id } = offer;
+export default function FavoriteCard({offer}: {offer: Offer}) {
   return (
-    <article className="cities__card place-card"
-      onMouseEnter={() => onHover(offer.id)}
-      onMouseLeave={() => onHover(null)}
-    >
-      {mark && (
+    <article className="favorites__card place-card">
+      {offer.mark && (
         <div className="place-card__mark">
-          <span>{mark}</span>
+          <span>{offer.mark}</span>
         </div>
       )}
       <div
-        className="cities__image-wrapper place-card__image-wrapper"
+        className="favorites__image-wrapper place-card__image-wrapper"
       >
         <a href="#">
           <img className="place-card__image"
-            src={cardImage} width="260" height="200"
-            alt="Place image"
+            src={offer.cardImage} width="150"
+            height="110" alt="Place image"
           />
         </a>
       </div>
-      <div className="place-card__info">
+      <div className="favorites__card-info place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">{pricePerNight}</b>
+            <b className="place-card__price-value">{offer.pricePerNight}</b>
             <span
               className="place-card__price-text"
             >&#47;&nbsp;night
             </span>
           </div>
-          <button className="place-card__bookmark-button button"
+          <button
+            className="place-card__bookmark-button place-card__bookmark-button--active button"
             type="button"
           >
             <svg className="place-card__bookmark-icon" width="18"
@@ -43,19 +36,19 @@ export default function PlaceCard({offer, onHover}: {
             >
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
-            <span className="visually-hidden">To bookmarks</span>
+            <span className="visually-hidden">In bookmarks</span>
           </button>
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: `calc(20% * ${rating})`}}></span>
+            <span style={{width: `calc(20% * ${offer.rating}`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${id}`}>{name}</Link>
+          <a href="#">{offer.name}</a>
         </h2>
-        <p className="place-card__type">{type}</p>
+        <p className="place-card__type">{offer.type}</p>
       </div>
     </article>
   );

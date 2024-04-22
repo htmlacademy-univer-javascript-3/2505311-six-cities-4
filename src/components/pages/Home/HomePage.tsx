@@ -1,10 +1,13 @@
-import PlaceCard from '../../PlaceCard.tsx';
+import {Offer, PrivateUser} from '../../../const';
+import PlaceList from '../../PlaceList';
 
 export interface HomePageProps {
   placesFound: number;
+  places: Offer[];
+  user: PrivateUser;
 }
 
-export default function HomePage({placesFound}: HomePageProps) {
+export default function HomePage({placesFound, places, user}: HomePageProps) {
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -29,9 +32,9 @@ export default function HomePage({placesFound}: HomePageProps) {
                     </div>
                     <span
                       className="header__user-name user__name"
-                    >Oliver.conner@gmail.com
+                    >{user.email}
                     </span>
-                    <span className="header__favorite-count">3</span>
+                    <span className="header__favorite-count">{user.favoriteCount}</span>
                   </a>
                 </li>
                 <li className="header__nav-item">
@@ -99,7 +102,7 @@ export default function HomePage({placesFound}: HomePageProps) {
                   </svg>
                 </span>
                 <ul
-                  className="places__options places__options--custom places__options--opened"
+                  className="places__options places__options--custom"
                 >
                   <li className="places__option places__option--active"
                     tabIndex={0}
@@ -115,13 +118,7 @@ export default function HomePage({placesFound}: HomePageProps) {
                   </li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-                <PlaceCard />
-                <PlaceCard />
-                <PlaceCard />
-                <PlaceCard />
-                <PlaceCard />
-              </div>
+              <PlaceList places={places}/>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>

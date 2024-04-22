@@ -6,12 +6,13 @@ import FavoritesPage from './pages/Favorites/FavoritesPage.tsx';
 import OfferPage from './pages/Offer/OfferPage.tsx';
 import LoginPage from './pages/Login/LoginPage.tsx';
 import {AppRoute, AuthorizationStatus} from '../const.ts';
+import {offerMock1, offerMock2, offerMock3, offerMock4} from '../mocks/offers';
 
 export default function App({homePageProps}: {homePageProps: HomePageProps}) {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={AppRoute.Home} element={<HomePage placesFound={homePageProps.placesFound}/>} />
+        <Route path={AppRoute.Home} element={<HomePage {...homePageProps}/>} />
         <Route path={AppRoute.Login} element={<LoginPage />} />
         <Route
           path={AppRoute.Favorites}
@@ -19,7 +20,11 @@ export default function App({homePageProps}: {homePageProps: HomePageProps}) {
             <PrivateRoute
               authorizationStatus={AuthorizationStatus.NoAuth}
             >
-              <FavoritesPage />
+              <FavoritesPage allFavorites={[
+                {city: 'Amsterdam', offers: [offerMock1, offerMock2]},
+                {city: 'Cologne', offers: [offerMock3, offerMock4]}
+              ]}
+              />
             </PrivateRoute>
           }
         />
