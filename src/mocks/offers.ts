@@ -11,7 +11,8 @@ export const offerMock1: Offer = {
   type: 'Apartment',
   rating: 4,
   insideItems: ['Coffee machine', 'Dishwasher'],
-  features: ['Apartment', '3 Bedrooms', 'Max 4 adults']
+  features: ['Apartment', '3 Bedrooms', 'Max 4 adults'],
+  location: {latitude: 52.3909553943508, longitude: 4.939309666406198, zoom: 11},
 };
 
 export const offerMock2: Offer = {
@@ -24,11 +25,12 @@ export const offerMock2: Offer = {
   cardImage: 'img/room.jpg',
   type: 'Room',
   rating: 5,
-  insideItems: ['Wi-Fi', 'Coffee machine', 'Dishwasher']
+  insideItems: ['Wi-Fi', 'Coffee machine', 'Dishwasher'],
+  location: {latitude: 52.3609553943508, longitude: 4.929309666406198, zoom: 12},
 };
 
 export const offerMock3: Offer = {
-  id: '3485734954',
+  id: '34857954',
   name: 'Wood and stone plac',
   description: 'An independent House, strategically located between' +
     ' Rembrandt Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.',
@@ -37,11 +39,12 @@ export const offerMock3: Offer = {
   cardImage: 'img/apartment-03.jpg',
   type: 'Apartment',
   rating: 3.5,
-  insideItems: ['Wi-Fi', 'Coffee machine', 'Dishwasher']
+  insideItems: ['Wi-Fi', 'Coffee machine', 'Dishwasher'],
+  location: {latitude: 52.3909553943508, longitude: 4.85309666406198, zoom: 11},
 };
 
 export const offerMock4: Offer = {
-  id: '3485734954',
+  id: '348954',
   name: 'Wood and stone plac',
   description: 'An independent House, strategically located between' +
     ' Rembrandt Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.',
@@ -50,7 +53,8 @@ export const offerMock4: Offer = {
   cardImage: 'img/apartment-02.jpg',
   type: 'Apartment',
   rating: 2.4,
-  insideItems: ['Wi-Fi', 'Coffee machine', 'Dishwasher']
+  insideItems: ['Wi-Fi', 'Coffee machine', 'Dishwasher'],
+  location: {latitude: 52.3809553943508, longitude: 4.85309666406198, zoom: 10}
 };
 
 export const places = [offerMock1, offerMock2, offerMock3, offerMock4];
