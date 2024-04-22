@@ -16,10 +16,11 @@ const activeIcon = new Icon({
   iconAnchor: [14, 40]
 });
 
-export default function Map({location, offers, hoveredOffer}: {
+export default function Map({location, offers, hoveredOffer, type}: {
   location: Location;
   offers: Offer[];
   hoveredOffer: string | null;
+  type: 'offer' | 'cities';
 }) {
   const mapRef = useRef(null);
   const map = useMap(mapRef, location);
@@ -51,5 +52,5 @@ export default function Map({location, offers, hoveredOffer}: {
     }
   }, [map, offers, hoveredOffer]);
 
-  return <section className="cities__map map" ref={mapRef} />;
+  return <section className={`${type}__map map`} ref={mapRef} />;
 }
