@@ -22,6 +22,7 @@ export interface Offer {
   type: string;
   insideItems?: string[];
   features?: string[];
+  location: Location;
 }
 
 export interface Review {
@@ -47,3 +48,14 @@ export interface FavoriteCityOffers {
 }
 
 export type FavoriteAllOffers = FavoriteCityOffers[]
+
+export interface Location {
+  latitude: number;
+  longitude: number;
+  zoom: number;
+}
+
+export interface City {
+  name: string;
+  location: Location;
+}

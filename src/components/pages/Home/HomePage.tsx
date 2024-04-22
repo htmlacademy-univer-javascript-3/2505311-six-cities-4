@@ -1,5 +1,8 @@
+import {useState} from 'react';
 import {Offer, PrivateUser} from '../../../const';
 import PlaceList from '../../PlaceList';
+import {cityMockAmsterdam} from '../../../mocks/cities';
+import Map from '../../Map';
 
 export interface HomePageProps {
   placesFound: number;
@@ -8,6 +11,8 @@ export interface HomePageProps {
 }
 
 export default function HomePage({placesFound, places, user}: HomePageProps) {
+  const [hoveredOffer, setHoveredOffer] = useState<string | null>(null);
+
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -118,10 +123,10 @@ export default function HomePage({placesFound, places, user}: HomePageProps) {
                   </li>
                 </ul>
               </form>
-              <PlaceList places={places}/>
+              <PlaceList places={places} setHoveredOffer={setHoveredOffer} />
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <Map location={cityMockAmsterdam.location} offers={places} hoveredOffer={hoveredOffer} />
             </div>
           </div>
         </div>
