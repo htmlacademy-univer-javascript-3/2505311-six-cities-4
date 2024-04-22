@@ -126,7 +126,7 @@ export default function HomePage({placesFound, places, user}: HomePageProps) {
               <PlaceList places={places} setHoveredOffer={setHoveredOffer} />
             </section>
             <div className="cities__right-section">
-              <Map location={cityMockAmsterdam.location} offers={places} hoveredOffer={hoveredOffer} />
+              <Map location={cityMockAmsterdam.location} offers={places} hoveredOffer={hoveredOffer} type={'cities'}/>
             </div>
           </div>
         </div>

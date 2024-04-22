@@ -6,7 +6,13 @@ import FavoritesPage from './pages/Favorites/FavoritesPage.tsx';
 import OfferPage from './pages/Offer/OfferPage.tsx';
 import LoginPage from './pages/Login/LoginPage.tsx';
 import {AppRoute, AuthorizationStatus} from '../const.ts';
-import {offerMock1, offerMock2, offerMock3, offerMock4} from '../mocks/offers';
+import {
+  offerMock1,
+  offerMock2,
+  offerMock3,
+  offerMock4,
+  places
+} from '../mocks/offers';
 
 export default function App({homePageProps}: {homePageProps: HomePageProps}) {
   return (
@@ -28,7 +34,7 @@ export default function App({homePageProps}: {homePageProps: HomePageProps}) {
             </PrivateRoute>
           }
         />
-        <Route path={AppRoute.Offer} element={<OfferPage /> } />
+        <Route path={AppRoute.Offer} element={<OfferPage nearOffers={places.slice(0, 3)}/> } />
         <Route path="*" element={<Page404 />} />
       </Routes>
     </BrowserRouter>
