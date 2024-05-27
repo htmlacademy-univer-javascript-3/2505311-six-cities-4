@@ -1,4 +1,4 @@
-import {cities, City} from '../const.ts';
+import {cities, City} from '../types/city.ts';
 
 type CityProps = {
   selectedCity: City;

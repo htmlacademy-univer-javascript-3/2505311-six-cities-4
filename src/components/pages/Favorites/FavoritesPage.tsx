@@ -1,7 +1,9 @@
-import {FavoriteAllOffers} from '../../../const';
 import FavoriteList from '../../FavoriteList';
+import {FavoriteAllOffers} from '../../../types/offer.ts';
 
-export default function FavoritesPage({allFavorites}: {allFavorites: FavoriteAllOffers}) {
+export default function FavoritesPage() {
+  const allFavorites: FavoriteAllOffers = [];
+
   return (
     <div className="page">
       <header className="header">

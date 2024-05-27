@@ -1,8 +1,9 @@
 import {Icon, layerGroup, Marker} from 'leaflet';
-import {Location, Offer} from '../const';
 import {useEffect, useRef} from 'react';
 import useMap from '../hooks/useMap';
 import 'leaflet/dist/leaflet.css';
+import {Offer} from '../types/offer.ts';
+import {Location} from '../types/city.ts';
 
 const defaultIcon = new Icon({
   iconUrl: '/img/pin.svg',
@@ -18,7 +19,7 @@ const activeIcon = new Icon({
 
 export default function Map({location, offers, hoveredOffer, type}: {
   location: Location;
-  offers: Offer[];
+  offers?: Offer[];
   hoveredOffer: string | null;
   type: 'offer' | 'cities';
 }) {
@@ -34,7 +35,7 @@ export default function Map({location, offers, hoveredOffer, type}: {
   useEffect(() => {
     if (map) {
       const markerLayer = layerGroup().addTo(map);
-      offers.map((offer) => {
+      offers?.map((offer) => {
         const marker = new Marker({
           lat: offer.location.latitude,
           lng: offer.location.longitude

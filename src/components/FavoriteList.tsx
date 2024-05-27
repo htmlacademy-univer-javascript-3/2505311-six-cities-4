@@ -1,5 +1,5 @@
-import {FavoriteCityOffers} from '../const';
 import FavoriteCard from './FavoriteCard';
+import {FavoriteCityOffers} from '../types/offer.ts';
 
 export default function FavoriteList({cityFavorites}: {cityFavorites: FavoriteCityOffers}) {
   return (

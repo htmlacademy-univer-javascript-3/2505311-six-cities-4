@@ -1,19 +1,19 @@
-import {Offer} from '../const';
 import {Link} from 'react-router-dom';
+import {Offer} from '../types/offer.ts';
 
 export default function PlaceCard({offer, onHover}: {
   offer: Offer;
   onHover: (id: string | null) => void;
 }) {
-  const { mark, name, rating, type, pricePerNight, cardImage, id } = offer;
+  const { isPremium, title, rating, type, price, previewImage, id } = offer;
   return (
     <article className="cities__card place-card"
       onMouseEnter={() => onHover(offer.id)}
       onMouseLeave={() => onHover(null)}
     >
-      {mark && (
+      {isPremium && (
         <div className="place-card__mark">
-          <span>{mark}</span>
+          <span>Premium</span>
         </div>
       )}
       <div
@@ -21,7 +21,7 @@ export default function PlaceCard({offer, onHover}: {
       >
         <a href="#">
           <img className="place-card__image"
-            src={cardImage} width="260" height="200"
+            src={previewImage} width="260" height="200"
             alt="Place image"
           />
         </a>
@@ -29,7 +29,7 @@ export default function PlaceCard({offer, onHover}: {
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">{pricePerNight}</b>
+            <b className="place-card__price-value">{price}</b>
             <span
               className="place-card__price-text"
             >&#47;&nbsp;night
@@ -53,7 +53,7 @@ export default function PlaceCard({offer, onHover}: {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${id}`}>{name}</Link>
+          <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>
