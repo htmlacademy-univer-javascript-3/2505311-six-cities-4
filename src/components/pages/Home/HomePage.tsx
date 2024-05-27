@@ -1,17 +1,23 @@
 import {useState} from 'react';
-import {Offer, PrivateUser} from '../../../const';
+import {PrivateUser} from '../../../const';
 import PlaceList from '../../PlaceList';
 import {cityMockAmsterdam} from '../../../mocks/cities';
 import Map from '../../Map';
+import {CityList} from '../../CityList.tsx';
+import {changeCity} from '../../../store/action.ts';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../../../store';
 
 export interface HomePageProps {
-  placesFound: number;
-  places: Offer[];
   user: PrivateUser;
 }
 
-export default function HomePage({placesFound, places, user}: HomePageProps) {
+export default function HomePage({user}: HomePageProps) {
   const [hoveredOffer, setHoveredOffer] = useState<string | null>(null);
+  const dispatch = useDispatch();
+  const city = useSelector((state: RootState) => state.city);
+  const offers = useSelector((state: RootState) => state.offers);
+  const offerCount = offers.length;
 
   return (
     <div className="page page--gray page--main">
@@ -57,47 +63,14 @@ export default function HomePage({placesFound, places, user}: HomePageProps) {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a
-                  className="locations__item-link tabs__item tabs__item--active"
-                >
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
-            </ul>
+            <CityList selectedCity={city} changeCity={(newCity) => dispatch(changeCity(newCity))} />
           </section>
         </div>
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{placesFound} places to stay in Amsterdam</b>
+              <b className="places__found">{offerCount} places to stay in {city.name}</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -123,10 +96,10 @@ export default function HomePage({placesFound, places, user}: HomePageProps) {
                   </li>
                 </ul>
               </form>
-              <PlaceList places={places} setHoveredOffer={setHoveredOffer} />
+              <PlaceList places={offers} setHoveredOffer={setHoveredOffer} />
             </section>
             <div className="cities__right-section">
-              <Map location={cityMockAmsterdam.location} offers={places} hoveredOffer={hoveredOffer} type={'cities'}/>
+              <Map location={cityMockAmsterdam.location} offers={offers} hoveredOffer={hoveredOffer} type={'cities'}/>
             </div>
           </div>
         </div>
