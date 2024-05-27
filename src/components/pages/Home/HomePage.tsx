@@ -1,22 +1,21 @@
 import {useState} from 'react';
-import {PrivateUser} from '../../../const';
 import PlaceList from '../../PlaceList';
-import {cityMockAmsterdam} from '../../../mocks/cities';
 import Map from '../../Map';
 import {CityList} from '../../CityList.tsx';
 import {changeCity} from '../../../store/action.ts';
 import {useDispatch, useSelector} from 'react-redux';
-import {RootState} from '../../../store';
+import {PrivateUser} from '../../../types/user.ts';
+import {State} from '../../../const.ts';
 
 export interface HomePageProps {
-  user: PrivateUser;
+  user?: PrivateUser;
 }
 
 export default function HomePage({user}: HomePageProps) {
   const [hoveredOffer, setHoveredOffer] = useState<string | null>(null);
   const dispatch = useDispatch();
-  const city = useSelector((state: RootState) => state.city);
-  const offers = useSelector((state: RootState) => state.offers);
+  const city = useSelector((state: State) => state.city);
+  const offers = useSelector((state: State) => state.offers);
   const offerCount = offers.length;
 
   return (
@@ -43,9 +42,9 @@ export default function HomePage({user}: HomePageProps) {
                     </div>
                     <span
                       className="header__user-name user__name"
-                    >{user.email}
+                    >{user?.email}
                     </span>
-                    <span className="header__favorite-count">{user.favoriteCount}</span>
+                    <span className="header__favorite-count">{user?.favoriteCount}</span>
                   </a>
                 </li>
                 <li className="header__nav-item">
@@ -99,7 +98,7 @@ export default function HomePage({user}: HomePageProps) {
               <PlaceList places={offers} setHoveredOffer={setHoveredOffer} />
             </section>
             <div className="cities__right-section">
-              <Map location={cityMockAmsterdam.location} offers={offers} hoveredOffer={hoveredOffer} type={'cities'}/>
+              <Map location={city.location} hoveredOffer={hoveredOffer} type={'cities'}/>
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import PlaceCard from './PlaceCard';
-import {Offer} from '../const';
+import {Offer} from '../types/offer.ts';
 
 export default function PlaceList({places, setHoveredOffer} : {
   places: Offer[];

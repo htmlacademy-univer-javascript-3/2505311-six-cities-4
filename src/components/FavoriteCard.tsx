@@ -1,11 +1,12 @@
-import {Offer} from '../const';
+import {Offer} from '../types/offer.ts';
+
 
 export default function FavoriteCard({offer}: {offer: Offer}) {
   return (
     <article className="favorites__card place-card">
-      {offer.mark && (
+      {offer.isPremium && (
         <div className="place-card__mark">
-          <span>{offer.mark}</span>
+          <span>Premium</span>
         </div>
       )}
       <div
@@ -13,7 +14,7 @@ export default function FavoriteCard({offer}: {offer: Offer}) {
       >
         <a href="#">
           <img className="place-card__image"
-            src={offer.cardImage} width="150"
+            src={offer.previewImage} width="150"
             height="110" alt="Place image"
           />
         </a>
@@ -21,7 +22,7 @@ export default function FavoriteCard({offer}: {offer: Offer}) {
       <div className="favorites__card-info place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">{offer.pricePerNight}</b>
+            <b className="place-card__price-value">{offer.price}</b>
             <span
               className="place-card__price-text"
             >&#47;&nbsp;night
@@ -46,7 +47,7 @@ export default function FavoriteCard({offer}: {offer: Offer}) {
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{offer.name}</a>
+          <a href="#">{offer.title}</a>
         </h2>
         <p className="place-card__type">{offer.type}</p>
       </div>

@@ -1,12 +1,13 @@
 import {useState} from 'react';
 import ReviewInput from '../../ReviewInput';
-import {cityMockAmsterdam} from '../../../mocks/cities';
 import Map from '../../Map';
-import {Offer} from '../../../const';
 import PlaceCard from '../../PlaceCard';
+import {Offer} from '../../../types/offer.ts';
+import {defaultCity} from '../../../types/city.ts';
 
-export default function OfferPage({nearOffers}: {nearOffers: Offer[]}) {
+export default function OfferPage() {
   const [hoveredOffer, setHoveredOffer] = useState<string | null>(null);
+  const nearOffers: Offer[] = [];
 
   return (
     <div className="page">
@@ -194,7 +195,7 @@ export default function OfferPage({nearOffers}: {nearOffers: Offer[]}) {
               </section>
             </div>
           </div>
-          <Map location={cityMockAmsterdam.location} offers={nearOffers} hoveredOffer={hoveredOffer} type={'offer'}/>
+          <Map location={defaultCity.location} hoveredOffer={hoveredOffer} type={'offer'}/>
         </section>
         <div className="container">
           <section className="near-places places">

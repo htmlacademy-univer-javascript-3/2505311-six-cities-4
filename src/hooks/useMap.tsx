@@ -1,6 +1,6 @@
 import {MutableRefObject, useEffect, useRef, useState} from 'react';
 import {TileLayer, Map} from 'leaflet';
-import {Location} from '../const';
+import {Location} from '../types/city.ts';
 
 export default function useMap(mapRef: MutableRefObject<HTMLElement | null>, location: Location) {
   const [map, setMap] = useState<Map | null>(null);
