@@ -8,7 +8,6 @@ import LoginPage from './pages/Login/LoginPage.tsx';
 import {AppRoute} from '../const.ts';
 import {Provider} from 'react-redux';
 import {store} from '../store';
-import {AuthorizationStatus} from '../types/user.ts';
 
 export default function App() {
   return (
@@ -20,9 +19,7 @@ export default function App() {
           <Route
             path={AppRoute.Favorites}
             element={
-              <PrivateRoute
-                authorizationStatus={AuthorizationStatus.NoAuth}
-              >
+              <PrivateRoute>
                 <FavoritesPage />
               </PrivateRoute>
             }

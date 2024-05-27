@@ -10,7 +10,9 @@ export enum AppRoute {
 export enum ApiRoute {
   Offers = '/offers',
   Reviews = '/comments',
-  Favourites = '/favorite'
+  Favorites = '/favorite',
+  Login = '/login',
+  Logout = '/logout'
 }
 
 export enum ApiConst {
