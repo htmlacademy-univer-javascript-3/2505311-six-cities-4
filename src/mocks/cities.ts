@@ -8,3 +8,12 @@ export const cityMockAmsterdam: City = {
     zoom: 10
   }
 };
+
+export const cityMockParis: City = {
+  name: 'Paris',
+  location: {
+    latitude: 48.85661,
+    longitude: 2.351499,
+    zoom: 13
+  }
+};

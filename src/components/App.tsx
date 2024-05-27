@@ -13,31 +13,34 @@ import {
   offerMock4,
   places
 } from '../mocks/offers';
+import {Provider} from 'react-redux';
+import {store} from '../store';
 
 export default function App({homePageProps}: {homePageProps: HomePageProps}) {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path={AppRoute.Home} element={<HomePage {...homePageProps}/>} />
-        <Route path={AppRoute.Login} element={<LoginPage />} />
-        <Route
-          path={AppRoute.Favorites}
-          element={
-            <PrivateRoute
-              authorizationStatus={AuthorizationStatus.NoAuth}
-            >
-              <FavoritesPage allFavorites={[
-                {city: 'Amsterdam', offers: [offerMock1, offerMock2]},
-                {city: 'Cologne', offers: [offerMock3, offerMock4]}
-              ]}
-              />
-            </PrivateRoute>
-          }
-        />
-        <Route path={AppRoute.Offer} element={<OfferPage nearOffers={places.slice(0, 3)}/> } />
-        <Route path="*" element={<Page404 />} />
-      </Routes>
-    </BrowserRouter>
-
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          <Route path={AppRoute.Home} element={<HomePage {...homePageProps}/>} />
+          <Route path={AppRoute.Login} element={<LoginPage />} />
+          <Route
+            path={AppRoute.Favorites}
+            element={
+              <PrivateRoute
+                authorizationStatus={AuthorizationStatus.NoAuth}
+              >
+                <FavoritesPage allFavorites={[
+                  {city: 'Amsterdam', offers: [offerMock1, offerMock2]},
+                  {city: 'Cologne', offers: [offerMock3, offerMock4]}
+                ]}
+                />
+              </PrivateRoute>
+            }
+          />
+          <Route path={AppRoute.Offer} element={<OfferPage nearOffers={places.slice(0, 3)}/> } />
+          <Route path="*" element={<Page404 />} />
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   );
 }
