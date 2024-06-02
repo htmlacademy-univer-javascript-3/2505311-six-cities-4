@@ -7,7 +7,7 @@ import {AuthorizationStatus, PrivateUser} from '../types/user.ts';
 export const changeCity = createAction<City>('changeCity');
 export const fillOfferList = createAction<Offer[]>('fillOfferList');
 export const loadOffers = createAction<Offer[]>('loadOffers');
+export const updateOffer = createAction<Offer>('data/updateOffer');
 export const setLoadingStatus = createAction<LoadingStatus>('setLoadingStatus');
-export const highlightMarker = createAction<{ id: string } | null>('highlightMarker');
 export const setAuthStatus = createAction<AuthorizationStatus>('setAuthStatus');
 export const setUser = createAction<PrivateUser | undefined>('setUser');

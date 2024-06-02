@@ -1,9 +1,9 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AxiosInstance} from 'axios';
 import {ApiRoute, AppDispatch, LoadingStatus} from '../const.ts';
-import {loadOffers, setAuthStatus, setLoadingStatus, setUser} from './action.ts';
+import {loadOffers, setAuthStatus, setLoadingStatus, setUser, updateOffer} from './action.ts';
 import {Comment, Offer} from '../types/offer.ts';
-import {AuthorizationStatus, PrivateUser} from '../types/user.ts';
+import {AuthorizationStatus, PrivateUser, User} from '../types/user.ts';
 import {deleteToken, setToken} from '../api/token.ts';
 
 
@@ -34,9 +34,10 @@ export const fetchOffer = createAsyncThunk<Offer, Offer['id'], ThunkApiConfig>(
     dispatch(setLoadingStatus(LoadingStatus.Pending));
     const {data: offer} = await api.get<Offer>(`${ApiRoute.Offers}/${offerId}`);
     const {data: comments} = await api.get<Comment[]>(`${ApiRoute.Reviews}/${offerId}`);
-    const {data: nearPlaces} = await api.get<Offer[]>(`${ApiRoute.Offers}/${offerId}/nearPlaces`);
+    const {data: nearPlaces} = await api.get<Offer[]>(`${ApiRoute.Offers}/${offerId}/nearby`);
     offer.comments = comments;
     offer.nearPlaces = nearPlaces;
+    dispatch(updateOffer(offer));
     dispatch(setLoadingStatus(LoadingStatus.Success));
     return offer;
   }
@@ -46,8 +47,9 @@ export const checkAuth = createAsyncThunk<void, undefined, ThunkApiConfig>(
   'user/checkAuth',
   async (_arg, {dispatch, extra: api}) => {
     try {
-      await api.get(ApiRoute.Login);
+      const {data} = await api.get<PrivateUser>(ApiRoute.Login);
       dispatch(setAuthStatus(AuthorizationStatus.Auth));
+      dispatch(setUser(data));
     } catch {
       dispatch(setAuthStatus(AuthorizationStatus.NoAuth));
     }
@@ -73,4 +75,14 @@ export const logout = createAsyncThunk<void, undefined, ThunkApiConfig>(
     dispatch(setAuthStatus(AuthorizationStatus.NoAuth));
     dispatch(setUser(undefined));
   }
+);
+
+export const postComment = createAsyncThunk<void, Comment, ThunkApiConfig>(
+  'comment/postComment',
+  async ({id, comment, rating}, {dispatch, extra: api}) => {
+    dispatch(setLoadingStatus(LoadingStatus.Pending));
+    await api.post<User>(`/comments/${id}`, {comment, rating});
+    dispatch(fetchOffer(id));
+    dispatch(setLoadingStatus(LoadingStatus.Success));
+  },
 );

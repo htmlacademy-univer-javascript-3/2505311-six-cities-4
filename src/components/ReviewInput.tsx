@@ -1,15 +1,30 @@
 import RatingInput from './RatingInput';
-import {ChangeEvent, useState} from 'react';
+import {ChangeEvent, FormEvent, useState} from 'react';
+import {AuthorizationStatus} from '../types/user.ts';
+import {useAppDispatch, useAppSelector} from '../hooks';
+import {postComment} from '../store/api-action.ts';
 
-export default function ReviewInput() {
+export default function ReviewInput({offerId} : {offerId: string}) {
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(5);
+  const dispatch = useAppDispatch();
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
 
   const handleCommentChange = (e: ChangeEvent<HTMLTextAreaElement>) => setComment(e.target.value);
   const handleRatingChange = (e: ChangeEvent<HTMLInputElement>) => setRating(Number(e.target.value));
 
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(postComment({
+      id: offerId,
+      comment,
+      rating}));
+    setRating(5);
+    setComment('');
+  };
+
   return (
-    <form className="reviews__form form" action="#" method="post">
+    <form className="reviews__form form" onSubmit={handleSubmit}>
       <label className="reviews__label form__label" htmlFor="review">
         Your review
       </label>
@@ -33,7 +48,7 @@ export default function ReviewInput() {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={comment.length < 50}
+          disabled={comment.length < 50 || comment.length > 300 || authorizationStatus === AuthorizationStatus.NoAuth}
         >
           Submit
         </button>

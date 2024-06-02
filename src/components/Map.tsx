@@ -38,7 +38,7 @@ export default function Map({location, offers, hoveredOffer, type}: {
       offers?.map((offer) => {
         const marker = new Marker({
           lat: offer.location.latitude,
-          lng: offer.location.longitude
+          lng: offer.location.longitude,
         });
 
         marker.setIcon(
