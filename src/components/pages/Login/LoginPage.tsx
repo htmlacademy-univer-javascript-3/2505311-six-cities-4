@@ -6,19 +6,19 @@ import {Link, Navigate} from 'react-router-dom';
 import {AuthorizationStatus} from '../../../types/user.ts';
 
 export default function LoginPage() {
-  const authStatus = useAppSelector((state) => state.authorizationStatus);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useAppDispatch();
   const onEmailChange = (e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
   const onPasswordChange = (e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(login({email, password}));
   };
 
-  return authStatus !== AuthorizationStatus.Auth ? (
+  return authorizationStatus !== AuthorizationStatus.Auth ? (
     <div className="page page--gray page--login">
       <header className="header">
         <div className="container">

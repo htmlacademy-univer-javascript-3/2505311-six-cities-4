@@ -8,8 +8,12 @@ import LoginPage from './pages/Login/LoginPage.tsx';
 import {AppRoute} from '../const.ts';
 import {Provider} from 'react-redux';
 import {store} from '../store';
+import {checkAuth, fetchOffers} from '../store/api-action.ts';
 
 export default function App() {
+  store.dispatch(fetchOffers());
+  store.dispatch(checkAuth());
+
   return (
     <Provider store={store}>
       <BrowserRouter>

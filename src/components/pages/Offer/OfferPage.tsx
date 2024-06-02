@@ -1,14 +1,35 @@
-import {useState} from 'react';
+import {useEffect} from 'react';
 import ReviewInput from '../../ReviewInput';
 import Map from '../../Map';
-import PlaceCard from '../../PlaceCard';
 import {Offer} from '../../../types/offer.ts';
-import {defaultCity} from '../../../types/city.ts';
 import Header from '../../Header.tsx';
+import {useAppDispatch, useAppSelector} from '../../../hooks';
+import {useParams} from 'react-router-dom';
+import PlaceList from '../../PlaceList.tsx';
+import {fetchOffer} from '../../../store/api-action.ts';
+import Page404 from '../404/Page404.tsx';
+import Spinner from '../../Spinner.tsx';
 
 export default function OfferPage() {
-  const [hoveredOffer, setHoveredOffer] = useState<string | null>(null);
-  const nearOffers: Offer[] = [];
+  const dispatch = useAppDispatch();
+  const { id } = useParams();
+  const offers: Offer[] = useAppSelector((state) => state.offers);
+  const offerId = offers.find((offer) => offer.id === id)?.id ?? '';
+  const currentOffer = useAppSelector((state) => state.currentOffer);
+
+  useEffect(() => {
+    if (offerId) {
+      dispatch(fetchOffer(offerId));
+    }
+  }, [dispatch, offerId]);
+
+  if (!currentOffer) {
+    return <Spinner />;
+  }
+
+  if (!offerId && !currentOffer) {
+    return <Page404 />;
+  }
 
   return (
     <div className="page">
@@ -17,24 +38,11 @@ export default function OfferPage() {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              <div className="offer__image-wrapper">
-                <img className="offer__image" src="/img/room.jpg" alt="Photo studio"/>
-              </div>
-              <div className="offer__image-wrapper">
-                <img className="offer__image" src="/img/apartment-01.jpg" alt="Photo studio"/>
-              </div>
-              <div className="offer__image-wrapper">
-                <img className="offer__image" src="/img/apartment-02.jpg" alt="Photo studio"/>
-              </div>
-              <div className="offer__image-wrapper">
-                <img className="offer__image" src="/img/apartment-03.jpg" alt="Photo studio"/>
-              </div>
-              <div className="offer__image-wrapper">
-                <img className="offer__image" src="/img/studio-01.jpg" alt="Photo studio"/>
-              </div>
-              <div className="offer__image-wrapper">
-                <img className="offer__image" src="/img/apartment-01.jpg" alt="Photo studio"/>
-              </div>
+              {currentOffer?.images?.map((img) => (
+                <div className="offer__image-wrapper" key={img}>
+                  <img className="offer__image" src={img} alt={`Photo studio ${currentOffer?.id}`}></img>
+                </div>
+              ))}
             </div>
           </div>
           <div className="offer__container container">
@@ -44,7 +52,7 @@ export default function OfferPage() {
               </div>
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">
-                  Beautiful &amp; luxurious studio at great location
+                  {currentOffer?.title}
                 </h1>
                 <button className="offer__bookmark-button button" type="button">
                   <svg className="offer__bookmark-icon" width={31} height={33}>
@@ -55,128 +63,102 @@ export default function OfferPage() {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{'width': '80%'}}/>
+                  <span style={{'width': `calc(${currentOffer?.rating} * 20%)`}}/>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="offer__rating-value rating__value">4.8</span>
+                <span className="offer__rating-value rating__value">{currentOffer?.rating}</span>
               </div>
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
-                  Apartment
+                  {currentOffer?.type[0].toUpperCase() + currentOffer?.type.slice(1)}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  3 Bedrooms
+                  {currentOffer?.bedrooms} Bedrooms
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                  Max 4 adults
+                  Max {currentOffer?.maxAdults} adults
                 </li>
               </ul>
               <div className="offer__price">
-                <b className="offer__price-value">€120</b>
+                <b className="offer__price-value">€{currentOffer?.price}</b>
                 <span className="offer__price-text">&nbsp;night</span>
               </div>
               <div className="offer__inside">
                 <h2 className="offer__inside-title">What&apos;s inside</h2>
                 <ul className="offer__inside-list">
-                  <li className="offer__inside-item">
-                    Wi-Fi
-                  </li>
-                  <li className="offer__inside-item">
-                    Washing machine
-                  </li>
-                  <li className="offer__inside-item">
-                    Towels
-                  </li>
-                  <li className="offer__inside-item">
-                    Heating
-                  </li>
-                  <li className="offer__inside-item">
-                    Coffee machine
-                  </li>
-                  <li className="offer__inside-item">
-                    Baby seat
-                  </li>
-                  <li className="offer__inside-item">
-                    Kitchen
-                  </li>
-                  <li className="offer__inside-item">
-                    Dishwasher
-                  </li>
-                  <li className="offer__inside-item">
-                    Cabel TV
-                  </li>
-                  <li className="offer__inside-item">
-                    Fridge
-                  </li>
+                  {currentOffer?.goods?.map((item) => (
+                    <li className="offer__inside-item" key={item}>
+                      {item}
+                    </li>
+                  ))}
                 </ul>
               </div>
               <div className="offer__host">
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
                   <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
-                    <img className="offer__avatar user__avatar" src="/img/avatar-angelina.jpg" width={74} height={74}
+                    <img className="offer__avatar user__avatar" src={currentOffer?.host.avatarUrl} width={74} height={74}
                       alt="Host avatar"
                     />
                   </div>
                   <span className="offer__user-name">
-                Angelina
+                    {currentOffer?.host.name}
                   </span>
-                  <span className="offer__user-status">
-                Pro
-                  </span>
+                  {currentOffer?.host.isPro && (
+                    <span className="offer__user-status">
+                      Pro
+                    </span>
+                  )}
                 </div>
                 <div className="offer__description">
                   <p className="offer__text">
-                    A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The
-                    building is green and from 18th century.
-                  </p>
-                  <p className="offer__text">
-                    An independent House, strategically located between Rembrand Square and National Opera, but where
-                    the bustle of the city comes to rest in this alley flowery and colorful.
+                    {currentOffer?.description}
                   </p>
                 </div>
               </div>
               <section className="offer__reviews reviews">
-                <h2 className="reviews__title">Reviews · <span className="reviews__amount">1</span></h2>
-                <ul className="reviews__list">
-                  <li className="reviews__item">
-                    <div className="reviews__user user">
-                      <div className="reviews__avatar-wrapper user__avatar-wrapper">
-                        <img className="reviews__avatar user__avatar" src="/img/avatar-max.jpg" width={54} height={54}
-                          alt="Reviews avatar"
-                        />
-                      </div>
-                      <span className="reviews__user-name">
-                    Max
-                      </span>
-                    </div>
-                    <div className="reviews__info">
-                      <div className="reviews__rating rating">
-                        <div className="reviews__stars rating__stars">
-                          <span style={{'width': '80%'}}/>
-                          <span className="visually-hidden">Rating</span>
+                <h2 className="reviews__title">Reviews · <span className="reviews__amount">{currentOffer?.comments?.length}</span></h2>
+                {currentOffer?.comments && currentOffer?.comments?.map((comment) => (
+                  <ul className="reviews__list" key={comment.id}>
+                    <li className="reviews__item">
+                      <div className="reviews__user user">
+                        <div className="reviews__avatar-wrapper user__avatar-wrapper">
+                          <img className="reviews__avatar user__avatar" src={comment?.user?.avatarUrl} width={54} height={54}
+                            alt="Reviews avatar"
+                          />
                         </div>
+                        <span className="reviews__user-name">
+                          {comment?.user?.name}
+                        </span>
                       </div>
-                      <p className="reviews__text">
-                        A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.
-                        The building is green and from 18th century.
-                      </p>
-                      <time className="reviews__time" dateTime="2019-04-24">April 2019</time>
-                    </div>
-                  </li>
-                </ul>
-                <ReviewInput />
+                      <div className="reviews__info">
+                        <div className="reviews__rating rating">
+                          <div className="reviews__stars rating__stars">
+                            <span style={{'width': `calc(${comment.rating} * 20%)`}}/>
+                            <span className="visually-hidden">Rating</span>
+                          </div>
+                        </div>
+                        <p className="reviews__text">
+                          {comment.comment}
+                        </p>
+                        <time className="reviews__time" dateTime={comment.date}>
+                          {new Date(comment?.date ?? '')
+                            .toLocaleDateString(undefined, {month: 'long', year: 'numeric'})}
+                        </time>
+                      </div>
+                    </li>
+                  </ul>
+                ))}
+                <ReviewInput offerId={offerId}/>
               </section>
             </div>
           </div>
-          <Map location={defaultCity.location} hoveredOffer={hoveredOffer} type={'offer'}/>
+          <Map location={currentOffer?.location} offers={[currentOffer, ...currentOffer?.nearPlaces?.slice(0, 3) ?? []]} hoveredOffer={offerId ?? ''} type={'offer'}/>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <div className="near-places__list places__list">
-              {nearOffers.map((offer) => <PlaceCard offer={offer} onHover={setHoveredOffer} key={offer.id}/>)}
-            </div>
+            <PlaceList places={currentOffer?.nearPlaces?.slice(0, 3)} listType={'near'}/>
           </section>
         </div>
       </main>

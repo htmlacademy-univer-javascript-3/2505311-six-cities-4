@@ -1,6 +1,13 @@
 import {City, Location} from './city.ts';
 import {User} from './user.ts';
 
+export enum FilterType {
+  Popular = 'Popular',
+  HighToLow = 'Price: high to low',
+  LowToHigh = 'Price: low to high',
+  TopRated = 'Top rated first'
+}
+
 export interface OfferBase {
   id: string;
   title: string;
@@ -16,11 +23,11 @@ export interface OfferBase {
 
 export interface Offer extends OfferBase {
   description?: string;
-  bedrooms: number;
+  bedrooms?: number;
   goods?: string[];
   host: User;
-  images: string[];
-  maxAdults: number;
+  images?: string[];
+  maxAdults?: number;
   comments?: Comment[];
   nearPlaces?: Offer[];
 }
@@ -32,8 +39,8 @@ export interface CommentBase {
 
 export interface Comment extends CommentBase {
   id: string;
-  user: User;
-  date: string;
+  user?: User;
+  date?: string;
 }
 
 export interface FavoriteCityOffers {

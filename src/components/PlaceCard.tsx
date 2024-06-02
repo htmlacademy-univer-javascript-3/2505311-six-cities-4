@@ -3,13 +3,13 @@ import {Offer} from '../types/offer.ts';
 
 export default function PlaceCard({offer, onHover}: {
   offer: Offer;
-  onHover: (id: string | null) => void;
+  onHover?: (id: string | null) => void;
 }) {
   const { isPremium, title, rating, type, price, previewImage, id } = offer;
   return (
     <article className="cities__card place-card"
-      onMouseEnter={() => onHover(offer.id)}
-      onMouseLeave={() => onHover(null)}
+      onMouseEnter={onHover ? () => onHover(offer.id) : undefined}
+      onMouseLeave={onHover ? () => onHover(null) : undefined}
     >
       {isPremium && (
         <div className="place-card__mark">
@@ -19,12 +19,12 @@ export default function PlaceCard({offer, onHover}: {
       <div
         className="cities__image-wrapper place-card__image-wrapper"
       >
-        <a href="#">
+        <Link to={`/offer/${id}`}>
           <img className="place-card__image"
             src={previewImage} width="260" height="200"
             alt="Place image"
           />
-        </a>
+        </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
